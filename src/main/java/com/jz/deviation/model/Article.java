@@ -1,27 +1,32 @@
 package com.jz.deviation.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Type;
+
+import com.jz.deviation.common.CommonModel;
 
 /**
- * 整个易家互动的通用用户
- * 
+ * 文章
  * @author yangxi
  */
-@Document(indexName = "deviation", type = "article", shards = 1, replicas = 0)  
-public class Article{
-	@Id
-	private long modelId;
-	private long createTime;
-	private long updateTime;
-	private boolean deleted;
-	private long parentModelId;
-	private String title;
-	private String content;
-	private long readCount;
-	private long authUserId;
-	private long chiCount;
-	private long level;
+@Entity
+@Table(name = "article")
+@DynamicUpdate(true)
+public class Article extends CommonModel implements Serializable{
+	private static final long serialVersionUID = -3646308004668890794L;
+	private long parentModelId;//父节点id
+	private String title;//标题
+	@Type(type = "text")
+	private String content;//文章内容
+	private long readCount;//阅读数
+	private long authUserId;//作者id
+	private long starCount;//点赞数
+	private long level;//节点层级，0表示开篇
 	public long getParentModelId() {
 		return parentModelId;
 	}
@@ -36,30 +41,6 @@ public class Article{
 	}
 	public String getContent() {
 		return content;
-	}
-	public long getModelId() {
-		return modelId;
-	}
-	public void setModelId(long modelId) {
-		this.modelId = modelId;
-	}
-	public long getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(long createTime) {
-		this.createTime = createTime;
-	}
-	public long getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(long updateTime) {
-		this.updateTime = updateTime;
-	}
-	public boolean isDeleted() {
-		return deleted;
-	}
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
 	}
 	public void setContent(String content) {
 		this.content = content;
@@ -76,11 +57,11 @@ public class Article{
 	public void setAuthUserId(long authUserId) {
 		this.authUserId = authUserId;
 	}
-	public long getChiCount() {
-		return chiCount;
+	public long getStarCount() {
+		return starCount;
 	}
-	public void setChiCount(long chiCount) {
-		this.chiCount = chiCount;
+	public void setStarCount(long starCount) {
+		this.starCount = starCount;
 	}
 	public long getLevel() {
 		return level;
